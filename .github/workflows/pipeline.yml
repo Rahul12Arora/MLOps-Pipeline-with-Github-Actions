@@ -1,0 +1,25 @@
+name: Tourism MLOps Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  train-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Dependencies
+        run: pip install pandas scikit-learn joblib huggingface_hub
+
+      - name: Run Training Script
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python train_script.py
